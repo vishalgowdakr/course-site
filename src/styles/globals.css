@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sedan-sc-regular {
+	font-family: "Sedan SC", serif;
+	font-weight: 400;
+	font-style: normal;
+}
+
+body {
+	color: #444c80;
+	background-color: #e5e5f7;
+	opacity: 1;
+	background-image: radial-gradient(#444cf7 1.2000000000000002px, transparent 1.2000000000000002px), radial-gradient(#444cf7 1.2000000000000002px, #e5e5f7 1.2000000000000002px);
+	background-size: 48px 48px;
+	background-position: 0 0, 24px 24px;
+}
