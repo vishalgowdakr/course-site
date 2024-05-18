@@ -1,12 +1,15 @@
 import Banner from "./_components/banner";
 import Toc from "./_components/toc";
-import sampleLessons from "./_data/lessons";
+import getLessonsObj from "./_data/lessons";
 
-export default function HomePage() {
+async function HomePage() {
+  const lessonsObj = await getLessonsObj();
   return (
     <main className="">
       <Banner />
-      <Toc lessons={sampleLessons} />
+      <Toc lessons={lessonsObj.lessons} />
     </main>
   );
 }
+
+export default HomePage;

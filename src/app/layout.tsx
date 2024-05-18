@@ -23,7 +23,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
         <Topbar />
-        {children}</body>
+        {children}
+      </body>
     </html>
   );
 }
