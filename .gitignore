@@ -42,4 +42,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 #c tags
-tag
+tags
