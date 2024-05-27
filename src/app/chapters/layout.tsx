@@ -1,7 +1,7 @@
 'use client'
 
 import "~/styles/globals.css";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot } from "recoil"
 
 export default function RootLayout({
   children,

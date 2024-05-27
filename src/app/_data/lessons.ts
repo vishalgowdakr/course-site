@@ -7,6 +7,7 @@ export interface Lesson {
 
 export interface ListProps {
 	lessons: Lesson[];
+	lessonsSize: number[]
 }
 
 async function readFirstLine(filePath: string): Promise<string> {
@@ -77,6 +78,6 @@ const directory = '/home/vishalgowdakr/personal/web/course-site/src/app/_data/md
 
 export default async function getLessonsObj(): Promise<ListProps> {
 	const lessonsWithChapters = await constructChapterObject(directory);
-	const lessonsObj: ListProps = { lessons: lessonsWithChapters };
+	const lessonsObj: ListProps = { lessons: lessonsWithChapters, lessonsSize: lessonsWithChapters.map(lesson => lesson.chapters.length) };
 	return lessonsObj;
 }

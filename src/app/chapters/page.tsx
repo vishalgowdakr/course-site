@@ -1,11 +1,10 @@
-'use client'
-
 import React from 'react';
+import ContentArea from './_components/ContentArea';
 
 const HelloWorld = () => {
   return (
-    <div>
-      <h1>Hello, World!</h1>
+    <div className='flex justify-center'>
+      <ContentArea />
     </div>
   );
 };
