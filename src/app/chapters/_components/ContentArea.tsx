@@ -47,11 +47,11 @@ export default function ContentArea() {
   }
 
   const path = lessonData?.lessons?.[currentChapterIndex.lesson]?.chapters?.[currentChapterIndex.chapter]?.path;
-  const uri = path ?? 'home/vishalgowdakr/personal/web/course-site/src/app/_data/mdfiles/unit1/example1.md';
+  const uri = path
 
   return (
     <div className="w-3/4 flex-col bg-white p-16 m-4 shadow shadow-gray-200">
-      <LessonContent uri={uri} />
+      <LessonContent uri={uri ?? ''} />
       <div className="flex justify-between">
         {!isAtFirstLesson && (
           <Button onClick={goToPreviousChapter}>

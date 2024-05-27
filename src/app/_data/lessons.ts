@@ -64,7 +64,7 @@ const constructChapterObject = async (dir: string): Promise<Lesson[]> => {
 			const filePath = path.join(unitPath, file);
 			const name = await readFirstLine(filePath).then((line) => line.replace("# ", ""));
 			return {
-				name,
+				name: name,
 				path: filePath,
 			};
 		}));
@@ -77,8 +77,7 @@ const constructChapterObject = async (dir: string): Promise<Lesson[]> => {
 	return fullLessons;
 };
 
-// Relative path from project root
-const directory = path.join(process.cwd(), 'src', 'app', '_data', 'mdfiles');
+const directory = path.join(process.cwd(), 'public', 'mdfiles')
 
 export default async function getLessonsObj(): Promise<ListProps> {
 	const lessonsWithChapters = await constructChapterObject(directory);

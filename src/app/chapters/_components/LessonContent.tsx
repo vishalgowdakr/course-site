@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react"
-import Markdown from "react-markdown"
+"use server"
+
+import { promises as fs } from 'fs'
+import ReactMarkdown from 'react-markdown'
 
 interface LessonContentProps {
   uri: string
 }
 
-export default function LessonContent({ uri }: LessonContentProps) {
-  const [content, setContent] = useState<string>("")
-
-  useEffect(() => {
-    fetch(uri)
-      .then(response => response.text())
-      .then(text => { setContent(text); console.log(text) })
-      .catch(error => console.error("Error loading lesson content:", error))
-  }, [uri])
+export default async function LessonContent({ uri }: LessonContentProps) {
+  let content = ""
+  try {
+    content = await fs.readFile(uri, 'utf8')
+  } catch (error) {
+    console.error('Error reading file:', error)
+    content = "Error loading content."
+  }
 
   return (
     <div className="h-9 w-full">
-      <Markdown>{content}</Markdown>
+      <ReactMarkdown>{content}</ReactMarkdown>
     </div>
   )
 }
