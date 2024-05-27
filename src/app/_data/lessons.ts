@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as path from 'path';
 
 export interface Lesson {
 	name: string;
@@ -7,14 +8,14 @@ export interface Lesson {
 
 export interface ListProps {
 	lessons: Lesson[];
-	lessonsSize: number[]
+	lessonsSize: number[];
 }
 
 async function readFirstLine(filePath: string): Promise<string> {
 	try {
 		const data = await fs.promises.readFile(filePath, 'utf-8');
 		if (typeof data === 'string') {
-			return data
+			return data;
 		} else {
 			throw new Error('Unexpected data type encountered.');
 		}
@@ -57,14 +58,16 @@ async function readFiles(directoryPath: string): Promise<string[]> {
 const constructChapterObject = async (dir: string): Promise<Lesson[]> => {
 	const lessons = await readDirectories(dir);
 	const fullLessons = await Promise.all(lessons.map(async (unit) => {
-		const files = await readFiles(dir + unit);
-		const chapters = await Promise.all(files
-			.map(async (file) => {
-				return ({
-					name: await readFirstLine(dir + unit + '/' + file).then((line) => (line.replace("# ", ""))),
-					path: dir + unit + '/' + file,
-				});
-			}));
+		const unitPath = path.join(dir, unit);
+		const files = await readFiles(unitPath);
+		const chapters = await Promise.all(files.map(async (file) => {
+			const filePath = path.join(unitPath, file);
+			const name = await readFirstLine(filePath).then((line) => line.replace("# ", ""));
+			return {
+				name,
+				path: filePath,
+			};
+		}));
 		const lesson: Lesson = {
 			name: unit,
 			chapters: chapters,
@@ -74,10 +77,14 @@ const constructChapterObject = async (dir: string): Promise<Lesson[]> => {
 	return fullLessons;
 };
 
-const directory = '/home/vishalgowdakr/personal/web/course-site/src/app/_data/mdfiles/';
+// Relative path from project root
+const directory = path.join(process.cwd(), 'src', 'app', '_data', 'mdfiles');
 
 export default async function getLessonsObj(): Promise<ListProps> {
 	const lessonsWithChapters = await constructChapterObject(directory);
-	const lessonsObj: ListProps = { lessons: lessonsWithChapters, lessonsSize: lessonsWithChapters.map(lesson => lesson.chapters.length) };
+	const lessonsObj: ListProps = {
+		lessons: lessonsWithChapters,
+		lessonsSize: lessonsWithChapters.map(lesson => lesson.chapters.length),
+	};
 	return lessonsObj;
 }
