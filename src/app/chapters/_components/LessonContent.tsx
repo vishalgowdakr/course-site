@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import marked from 'marked'
+import ReactMarkdown from 'react-markdown';
 
 type Data = {
   data: string
