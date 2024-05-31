@@ -1,4 +1,4 @@
-import { selector, atom } from 'recoil';
+import { atom } from 'recoil';
 import { type Lesson } from './lessons';
 
 const fetchLessons = async (): Promise<Lesson[]> => {
@@ -10,36 +10,48 @@ const fetchLessons = async (): Promise<Lesson[]> => {
 	return data;
 };
 
-export interface LessonData {
-	lessons: Lesson[];
-	lessonsSize: number[];
+export interface LessonProps {
+	lessons: Lesson[],
 	currentChapterIndex: {
-		lesson: number;
-		chapter: number;
-	};
+		lesson: number,
+		chapter: number
+	},
+	lessonSize: number[]
 }
 
-export const lessonsSelector = selector<Lesson[]>({
-	key: 'lessonsSelector',
-	get: async () => {
-		try {
-			const lessons = await fetchLessons();
-			return lessons;
-		} catch (error) {
-			console.error(error);
-			return []; // Return an empty array in case of an error
-		}
+export type CurrentChapter = {
+	lesson: number,
+	chapter: number
+}
+
+const initialLessonData: LessonProps = {
+	lessons: [] as Lesson[],
+	currentChapterIndex: {
+		lesson: 0,
+		chapter: 0,
 	},
+	lessonSize: [],
+};
+
+export const lessonAtom = atom({
+	key: 'lessonAtom',
+	default: initialLessonData,
 });
 
-export const lessonAtom = atom<LessonData>({
-	key: 'lessonAtom',
-	default: {
-		lessons: [],
-		lessonsSize: [],
-		currentChapterIndex: {
-			lesson: 0,
-			chapter: 0
-		},
+export const initializeLessonData = async (setLessonData: (data: LessonProps) => void) => {
+	try {
+		const lessons = await fetchLessons();
+		const lessonSize = lessons.map((obj) => obj.chapters.length)
+		const updatedLessonData: LessonProps = {
+			lessons: lessons,
+			currentChapterIndex: {
+				lesson: 0,
+				chapter: 0,
+			},
+			lessonSize: lessonSize
+		};
+		setLessonData(updatedLessonData);
+	} catch (error) {
+		console.error(error);
 	}
-});
+};

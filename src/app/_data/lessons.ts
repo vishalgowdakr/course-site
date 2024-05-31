@@ -14,8 +14,9 @@ export interface ListProps {
 async function readFirstLine(filePath: string): Promise<string> {
 	try {
 		const data = await fs.promises.readFile(filePath, 'utf-8');
-		if (typeof data === 'string') {
-			return data;
+		const firstLine = data.split('\n')[0]
+		if (typeof firstLine === 'string') {
+			return firstLine;
 		} else {
 			throw new Error('Unexpected data type encountered.');
 		}

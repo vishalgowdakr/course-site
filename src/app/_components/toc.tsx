@@ -1,11 +1,11 @@
 "use client"
 
 import TocCard from "./tocCard";
-import { type Lesson } from "../_data/lessons";
+import { type ListProps, type Lesson } from "../_data/lessons";
 import { RecoilRoot } from "recoil";
 
 interface TocProps {
-  lessons: Lesson[];
+  lessons: ListProps
 }
 
 const Toc = ({ lessons }: TocProps) => {
@@ -15,8 +15,8 @@ const Toc = ({ lessons }: TocProps) => {
         <div className="w-1/2">
           <h1 className="text-2xl mt-8 mb-4">Table of contents</h1>
         </div>
-        {lessons && lessons.length > 0 ? (
-          lessons.map((lesson: Lesson, index: number) => (
+        {lessons && lessons.lessons.length > 0 ? (
+          lessons.lessons.map((lesson: Lesson, index: number) => (
             <TocCard key={lesson.name} lesson={lesson} index={index} />
           ))
         ) : (

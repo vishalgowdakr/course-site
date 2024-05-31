@@ -7,7 +7,7 @@ async function HomePage() {
   return (
     <main className="">
       <Banner />
-      <Toc lessons={lessonsObj.lessons} />
+      <Toc lessons={lessonsObj} />
     </main>
   );
 }

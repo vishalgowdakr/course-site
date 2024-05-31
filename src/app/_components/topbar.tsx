@@ -9,7 +9,7 @@ export default function Topbar() {
   const course = 'Docker Alchemy'
   return (
     <RecoilRoot>
-      <nav className="h-16 border flex justify-between bg-white shadow-lg shadow-gray-200">
+      <nav className="h-16 w-full border flex justify-between bg-white fixed ">
         <Link href="/">
           <div className="font-bold text-xl flex-initial m-4 ml-4">{course.toUpperCase()}</div>
         </Link>
