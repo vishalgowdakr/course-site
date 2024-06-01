@@ -15,7 +15,6 @@ export default function LessonContent({ uri }: { uri: string }) {
           method: 'POST'
         });
         const data: Data = await response.json() as Data;
-        console.log(data)
         setContent(data.data);
       } catch (error) {
         console.error('Error fetching lesson content:', error);

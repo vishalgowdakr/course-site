@@ -12,10 +12,6 @@ const fetchLessons = async (): Promise<Lesson[]> => {
 
 export interface LessonProps {
 	lessons: Lesson[],
-	currentChapterIndex: {
-		lesson: number,
-		chapter: number
-	},
 	lessonSize: number[]
 }
 
@@ -26,12 +22,18 @@ export type CurrentChapter = {
 
 const initialLessonData: LessonProps = {
 	lessons: [] as Lesson[],
-	currentChapterIndex: {
-		lesson: 0,
-		chapter: 0,
-	},
 	lessonSize: [],
 };
+
+const initialChapterInfo: CurrentChapter = {
+	lesson: 0,
+	chapter: 0
+}
+
+export const currentChapterAtom = atom({
+	key: 'currentChapterAtom',
+	default: initialChapterInfo,
+})
 
 export const lessonAtom = atom({
 	key: 'lessonAtom',
@@ -44,10 +46,6 @@ export const initializeLessonData = async (setLessonData: (data: LessonProps) =>
 		const lessonSize = lessons.map((obj) => obj.chapters.length)
 		const updatedLessonData: LessonProps = {
 			lessons: lessons,
-			currentChapterIndex: {
-				lesson: 0,
-				chapter: 0,
-			},
 			lessonSize: lessonSize
 		};
 		setLessonData(updatedLessonData);

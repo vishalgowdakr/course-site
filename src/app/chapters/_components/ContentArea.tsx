@@ -1,82 +1,76 @@
 "use client";
 
-import { lessonAtom } from "~/app/_data/globalState";
+import { currentChapterAtom, lessonAtom, initializeLessonData, type CurrentChapter } from "~/app/_data/globalState";
 import { Button } from "../../../components/ui/button";
 import LessonContent from "./LessonContent";
 import { useRecoilState } from "recoil";
 import { useCallback, useEffect, useState } from "react";
-import { initializeLessonData } from "~/app/_data/globalState";
 
 export default function ContentArea() {
   const [lessonData, setLessonData] = useRecoilState(lessonAtom);
   const [loading, setLoading] = useState(true);
+  const [chapter, setChapter] = useRecoilState(currentChapterAtom);
 
-  const fetchLesson = useCallback(() => {
-    console.log(loading);
-    if (loading !== false) {
-      initializeLessonData(setLessonData)
-        .then(() => setLoading(loading => !loading))
-        .catch(console.error)
+  console.log(chapter)
+  const fetchLesson = useCallback(async () => {
+    if (loading) {
+      try {
+        await initializeLessonData(setLessonData);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }, [setLessonData, loading]);
+  }, [loading, setLessonData]);
 
   useEffect(() => {
-    fetchLesson();
+    fetchLesson().catch(console.error);
   }, [fetchLesson]);
 
-  const currentChapterIndex = lessonData.currentChapterIndex;
+  const currentChapterIndex = chapter;
   const isAtFirstLesson = currentChapterIndex.lesson === 0 && currentChapterIndex.chapter === 0;
   const isAtLastLesson = currentChapterIndex.lesson === (lessonData?.lessonSize?.length || 0) - 1
     && currentChapterIndex.chapter === ((lessonData?.lessonSize?.[currentChapterIndex.lesson] ?? 1) - 1);
 
   const goToPreviousChapter = () => {
-    setLessonData((prevLessonData) => {
-      const copyLData = { ...prevLessonData };
+    function getPreviousChapter(prevChapter: CurrentChapter) {
       if (currentChapterIndex.chapter !== 0) {
-        copyLData.currentChapterIndex = {
-          ...currentChapterIndex,
-          chapter: currentChapterIndex.chapter - 1,
-        };
+        return { ...currentChapterIndex, chapter: currentChapterIndex.chapter - 1 };
       } else if (currentChapterIndex.lesson > 0) {
         const previousLesson = currentChapterIndex.lesson - 1;
         const previousChapter = (lessonData?.lessonSize?.[previousLesson] ?? 1) - 1;
-        copyLData.currentChapterIndex = {
-          lesson: previousLesson,
-          chapter: previousChapter,
-        };
+        return { lesson: previousLesson, chapter: previousChapter };
       }
-      return copyLData;
-    });
+      return prevChapter;
+    }
+    const previousChapter = getPreviousChapter(chapter)
+    setChapter(previousChapter)
+    console.log(chapter)
   };
 
   const goToNextChapter = () => {
-    setLessonData((prevLessonData) => {
-      const copyLData = { ...prevLessonData };
-      const isAtEndOfALesson = currentChapterIndex.chapter === (copyLData.lessonSize?.[currentChapterIndex.lesson] ?? 1) - 1;
+    function getNextChapter(prevChapter: CurrentChapter) {
+      const isAtEndOfALesson = currentChapterIndex.chapter === (lessonData?.lessonSize?.[currentChapterIndex.lesson] ?? 1) - 1;
       if (!isAtEndOfALesson) {
-        copyLData.currentChapterIndex = {
-          ...currentChapterIndex,
-          chapter: currentChapterIndex.chapter + 1,
-        };
-      } else if (currentChapterIndex.lesson < (copyLData.lessonSize?.length || 0) - 1) {
-        copyLData.currentChapterIndex = {
-          lesson: currentChapterIndex.lesson + 1,
-          chapter: 0,
-        };
+        return { ...currentChapterIndex, chapter: currentChapterIndex.chapter + 1 };
+      } else if (currentChapterIndex.lesson < (lessonData?.lessonSize?.length || 0) - 1) {
+        return { lesson: currentChapterIndex.lesson + 1, chapter: 0 };
       }
-      return copyLData;
-    });
+      return prevChapter;
+    };
+    const nextChapter = getNextChapter(chapter)
+    setChapter(nextChapter)
+    console.log(chapter)
   };
 
   const path = lessonData?.lessons?.[currentChapterIndex.lesson]?.chapters?.[currentChapterIndex.chapter]?.path;
 
   return (
     <div className="w-3/4 flex-col bg-white p-16 m-4 shadow shadow-gray-200">
-      {loading === true ? (
+      {loading ? (
         <p>Loading...</p>
       ) : (
         <>
-          {console.log(path)}
           <LessonContent uri={path ?? ''} />
           <div className="flex justify-between">
             {!isAtFirstLesson && (

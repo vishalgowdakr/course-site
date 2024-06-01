@@ -1,7 +1,9 @@
 'use client'
 
+import { useRecoilState } from "recoil";
 import { type Lesson } from "../_data/lessons";
 import Link from "next/link";
+import { currentChapterAtom } from "../_data/globalState";
 
 interface TocCardProps {
   lesson: Lesson;
@@ -9,6 +11,7 @@ interface TocCardProps {
 }
 
 export default function TocCard(props: TocCardProps) {
+  const [chapterState, setChapterState] = useRecoilState(currentChapterAtom)
   const { lesson, index } = props;
   return (
     <div className="w-1/2 bg-white flex mt-8 shadow-md h-[220px] shadow-gray-400" id="card">
@@ -21,10 +24,10 @@ export default function TocCard(props: TocCardProps) {
       <div className="flex-col p-8 w-2/3" id="propss">
         <h2 className="text-xl mb-1 font-bold">{lesson.name}</h2>
         <div className="flex-col">
-          {lesson.chapters.map((chapter, index) => (
+          {lesson.chapters.map((chapter, idx) => (
             <div key={chapter.name}>
-              <Link href={`/chapters`} className="p-8">
-                {`${index + 1}. ${chapter.name}`}
+              <Link href={`/chapters`} onClick={() => { setChapterState({ lesson: index, chapter: idx }); console.log("Hello"); console.log(chapterState) }} className="p-8">
+                {`${idx + 1}. ${chapter.name}`}
               </Link>
             </div>
           ))}

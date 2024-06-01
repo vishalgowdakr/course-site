@@ -1,7 +1,4 @@
-Links: [[reference_cache]]
-
-
-## Git Quick Start Guide for Experienced Developers
+# Git Quick Start Guide for Experienced Developers
 
 **Introduction**
 
