@@ -2,6 +2,7 @@ import "~/styles/globals.css";
 import Topbar from "./_components/topbar";
 
 import { Inter } from "next/font/google";
+import UnderConstruction from "./_components/under_construction";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable}`}>
         <Topbar />
         {children}
+        <UnderConstruction />
       </body>
     </html>
   );
