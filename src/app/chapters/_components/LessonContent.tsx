@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 
 type Data = {
   data: string
@@ -25,8 +25,12 @@ export default function LessonContent({ uri }: { uri: string }) {
   }, [uri]);
 
   return (
-    <div className="h-full w-full">
-      <ReactMarkdown>{content}</ReactMarkdown>
+    <div className="w-fit h-fit">
+      <Markdown>{content}</Markdown>
+      <div>
+        <h1 className="bg-blue-50">Hello World</h1>
+        <h2 className="bg-red-50">Hello World</h2>
+      </div>
     </div>
   );
 }

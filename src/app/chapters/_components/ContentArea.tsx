@@ -70,21 +70,31 @@ export default function ContentArea() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <>
+        <div>
           <LessonContent uri={path ?? ''} />
           <div className="flex justify-between">
-            {!isAtFirstLesson && (
+            {isAtFirstLesson ? (
+              <Button onClick={goToPreviousChapter} disabled={true}>
+                &lt;--- Previous
+              </Button>
+            ) : (
               <Button onClick={goToPreviousChapter}>
                 &lt;--- Previous
               </Button>
-            )}
-            {!isAtLastLesson && (
+            )
+            }
+            {isAtLastLesson ? (
+              <Button onClick={goToNextChapter} disabled={true}>
+                Next ---&gt;
+              </Button>
+            ) : (
               <Button onClick={goToNextChapter}>
                 Next ---&gt;
               </Button>
-            )}
+            )
+            }
           </div>
-        </>
+        </div>
       )}
     </div>
   );
