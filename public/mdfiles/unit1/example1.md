@@ -125,7 +125,7 @@ Git is a powerful version control system (VCS) essential for modern software dev
 * **Git Cheat Sheet:** [https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet)
 
 **Note:** This guide provides a foundational understanding of Git commands. Refer to the resources above for in-depth explanations and advanced functionalities.
-```js
+```typescript
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 

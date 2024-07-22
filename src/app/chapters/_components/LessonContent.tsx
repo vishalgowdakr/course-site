@@ -25,11 +25,11 @@ export default function LessonContent({ uri }: { uri: string }) {
   }, [uri]);
 
   return (
-    <div className="w-fit h-fit">
-      <Markdown>{content}</Markdown>
-      <div>
-        <h1 className="bg-blue-50">Hello World</h1>
-        <h2 className="bg-red-50">Hello World</h2>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="w-full max-w-4xl px-4">
+        <article className="prose lg:prose-lg m-0">
+          <Markdown>{content}</Markdown>
+        </article>
       </div>
     </div>
   );

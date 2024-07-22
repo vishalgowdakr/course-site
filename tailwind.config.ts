@@ -34,7 +34,19 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  layers: {
+    'no-tailwindcss': {
+      // Add any styles you want to disable here
+      '.no-tailwindcss': {
+        all: 'unset',
+      },
+    },
+  },
+  plugins: [
+    require('tailwindcss-all'),
+    require('@tailwindcss/typography'),
+    require("tailwindcss-animate"),
+  ],
 } satisfies Config
 
 export default config
